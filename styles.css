@@ -1,0 +1,190 @@
+/* Custom Animations and RTL Support Adjustments */
+
+/* Fix Directional Arrow Flip on English Switch */
+html[dir="ltr"] .dir-arrow {
+    transform: rotate(180deg);
+}
+
+html[dir="ltr"] .dir-reverse-flip {
+    transform: scaleX(-1);
+}
+
+/* Smooth Card Hover */
+.card-item {
+    will-change: transform;
+}
+
+.card-item:hover {
+    transform: translateY(-6px);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0d9488;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0f766e;
+}
+
+
+/* ==========================================
+   Fix Logo Display & Alignment
+   ========================================== */
+
+/* الحاوية الخارجية للوغو */
+.custom-logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 65px;
+    width: auto;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-left: 10px; /* مسافة أمان إضافية من اليسار نحو النص */
+}
+/* تنسيق صورة اللوغو نفسها */
+.custom-logo-img {
+    height: 100%;
+    width: auto;
+    max-height: 65px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+/* في حال التحويم فوق اللوغو */
+.group:hover .custom-logo-img {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+
+/* ==========================================
+   Footer Logo Custom Styling
+   ========================================== */
+
+.footer-logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px; /* حجم متناسق مع نصوص الـ Footer */
+    width: auto;
+    background: transparent !important;
+}
+
+.footer-logo-img {
+    height: 100%;
+    width: auto;
+    max-height: 50px;
+    object-fit: contain;
+    /* فلتر لتوضيح اللوغو إذا كانت خلفية الفوتر غامقة */
+    filter: brightness(1.1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+button,
+a,
+.card-item,
+img{
+    transition:all .35s ease;
+}
+
+.card-item{
+box-shadow:
+0 10px 30px rgba(0,0,0,.05);
+}
+
+.card-item:hover{
+box-shadow:
+0 25px 60px rgba(13,148,136,.15);
+}
+
+/* ==========================================
+   Continuous Logo Marquee Animation
+   ========================================== */
+
+/* الحاوية الخارجية لإخفاء الأجزاء الخارجة من الشاشة */
+.marquee-container {
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+}
+
+/* مسار الحركة */
+.marquee-track {
+    animation: marqueeScroll 25s linear infinite;
+}
+
+/* إيقاف الحركة عند تحريك الماوس فوقها (Hover) */
+.marquee-container:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+/* حركة التمرير */
+@keyframes marqueeScroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%); /* إذا كان اتجاه الموقع RTL */
+    }
+}
+
+/* تنسيق صور اللوغوهات */
+.brand-logo {
+    height: 45px; /* ارتفاع مناسب متناسق */
+    width: auto;
+    max-width: 140px;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* ظهور الألوان الأصلية عند التحويم فوق اللوغو */
+.brand-logo:hover {
+    filter: grayscale(0%) opacity(1);
+    transform: scale(1.08);
+}
+
+/* ==========================================
+   Timeline Custom Styling
+   ========================================== */
+
+@media (max-width: 767px) {
+    /* ضبط الخط على الموبايل ليكون في الجانب الأيمن دائماً */
+    .timeline-line {
+        right: 1rem !important;
+        transform: none !important;
+    }
+    .timeline-dot {
+        right: 1rem !important;
+        transform: translateX(50%) !important;
+    }
+}
+
+/* ==========================================
+   Interactive Iraq Map Styling
+   ========================================== */
+
+/* تأثير الضوء اللامع للمحافظات */
+.province-path {
+    cursor: pointer;
+    filter: drop-shadow(0 0 2px rgba(14, 165, 233, 0.3));
+}
+
+.province-path:hover {
+    filter: drop-shadow(0 0 12px rgba(234, 179, 8, 0.8));
+    transform: translateY(-2px);
+}
+
+.province-path.active-province {
+    fill: #eab308 !important; /* اللون الذهبي المضيء للمحافظة النشطة */
+    filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.9));
+}
+
