@@ -88,7 +88,51 @@ const i18nData = {
     }
 };
 
+// Global Language Variable (Retains chosen language on reload)
+let currentLang = localStorage.getItem('siteLang') || 'ar';
+
+function applyLanguage(lang) {
+    const langText = document.getElementById('langText');
+    
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+    if (lang === 'en') {
+        document.body.classList.remove('font-cairo');
+        document.body.classList.add('font-plus');
+        if (langText) langText.textContent = 'العربية';
+    } else {
+        document.body.classList.remove('font-plus');
+        document.body.classList.add('font-cairo');
+        if (langText) langText.textContent = 'English';
+    }
+
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (i18nData[lang] && i18nData[lang][key]) {
+            element.textContent = i18nData[lang][key];
+        }
+    });
+
+    localStorage.setItem('siteLang', lang);
+
+    // Update toggle table button text if it exists
+    const container = document.getElementById('hospitalsContainer');
+    const btnText = document.getElementById('toggleBtnText');
+    if (btnText && container) {
+        const isHidden = container.classList.contains('hidden');
+        if (isHidden) {
+            btnText.innerText = lang === 'ar' ? 'عرض جدول المستشفيات والتجهيزات (43)' : 'Show Hospitals & Equipment Table (43)';
+        } else {
+            btnText.innerText = lang === 'ar' ? 'إخفاء جدول المستشفيات والتجهيزات' : 'Hide Hospitals & Equipment Table';
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Apply saved language on load
+    applyLanguage(currentLang);
 
     // 1. Mobile Menu Toggle
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -100,37 +144,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Language Switcher (Ar / En)
-    let currentLang = 'ar';
+    // 2. Language Switcher Event
     const langBtn = document.getElementById('langBtn');
-    const langText = document.getElementById('langText');
 
     if (langBtn) {
         langBtn.addEventListener('click', () => {
             currentLang = currentLang === 'ar' ? 'en' : 'ar';
-            
-            // Toggle HTML Language & Direction
-            document.documentElement.lang = currentLang;
-            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-
-            // Toggle Font Family Class
-            if (currentLang === 'en') {
-                document.body.classList.remove('font-cairo');
-                document.body.classList.add('font-plus');
-                langText.textContent = 'العربية';
-            } else {
-                document.body.classList.remove('font-plus');
-                document.body.classList.add('font-cairo');
-                langText.textContent = 'English';
-            }
-
-            // Translate Text Elements
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (i18nData[currentLang][key]) {
-                    element.textContent = i18nData[currentLang][key];
-                }
-            });
+            applyLanguage(currentLang);
         });
     }
 
@@ -172,11 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-
-
-// ==========================================
 // Hospitals & Equipment Data Array
-// ==========================================
 const hospitalsData = [
     { id: 1, name: "مستشفى الجهاز الهضمي", dept: "دائرة صحة النجف الأشرف", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
     { id: 2, name: "مستشفى الزهراء التعليمي", dept: "دائرة صحة النجف الأشرف", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
@@ -224,7 +240,6 @@ const hospitalsData = [
 ];
 
 // Render Table Function
-// Render Table Function (بدون عمود عدد القطع)
 function renderHospitalsTable(data) {
     const tbody = document.getElementById('hospitalsTableBody');
     if (!tbody) return;
@@ -266,8 +281,10 @@ function filterHospitals(type) {
         btn.classList.add('bg-slate-100', 'text-slate-700');
     });
 
-    event.target.classList.remove('bg-slate-100', 'text-slate-700');
-    event.target.classList.add('bg-medical-700', 'text-white', 'shadow-md');
+    if (event && event.target) {
+        event.target.classList.remove('bg-slate-100', 'text-slate-700');
+        event.target.classList.add('bg-medical-700', 'text-white', 'shadow-md');
+    }
 
     if (type === 'all') {
         renderHospitalsTable(hospitalsData);
@@ -278,11 +295,9 @@ function filterHospitals(type) {
     }
 }
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     renderHospitalsTable(hospitalsData);
 });
-
 
 // Function to toggle hospitals table visibility
 function toggleHospitalsContainer() {
@@ -291,7 +306,6 @@ function toggleHospitalsContainer() {
     const btnText = document.getElementById('toggleBtnText');
 
     if (container.classList.contains('hidden')) {
-        // إظهار الجدول
         container.classList.remove('hidden');
         setTimeout(() => {
             container.classList.remove('opacity-0', '-translate-y-2');
@@ -299,9 +313,8 @@ function toggleHospitalsContainer() {
         }, 20);
         
         arrow.style.transform = 'rotate(180deg)';
-        btnText.innerText = 'إخفاء جدول المستشفيات والتجهيزات';
+        btnText.innerText = currentLang === 'ar' ? 'إخفاء جدول المستشفيات والتجهيزات' : 'Hide Hospitals & Equipment Table';
     } else {
-        // إخفاء الجدول
         container.classList.remove('opacity-100', 'translate-y-0');
         container.classList.add('opacity-0', '-translate-y-2');
         
@@ -310,13 +323,11 @@ function toggleHospitalsContainer() {
         }, 300);
         
         arrow.style.transform = 'rotate(0deg)';
-        btnText.innerText = 'عرض جدول المستشفيات والتجهيزات (43)';
+        btnText.innerText = currentLang === 'ar' ? 'عرض جدول المستشفيات والتجهيزات (43)' : 'Show Hospitals & Equipment Table (43)';
     }
 }
 
-// ==========================================
 // Iraq Map Interactive Data
-// ==========================================
 const provincesData = {
     baghdad: {
         name: "بغداد",
@@ -371,19 +382,15 @@ const provincesData = {
     }
 };
 
-// Function to handle province click
 function selectProvince(provKey) {
     const data = provincesData[provKey];
     if (!data) return;
 
-    // Remove active style from all paths
     document.querySelectorAll('.province-path').forEach(p => p.classList.remove('active-province'));
     
-    // Add active style to selected province
     const activePath = document.getElementById(provKey);
     if (activePath) activePath.classList.add('active-province');
 
-    // Update UI Card
     document.getElementById('provName').innerText = data.name;
     document.getElementById('provCount').innerText = data.count;
 
@@ -398,7 +405,6 @@ function selectProvince(provKey) {
     });
 }
 
-// Default select Baghdad on page load
 document.addEventListener('DOMContentLoaded', () => {
     selectProvince('baghdad');
 });
