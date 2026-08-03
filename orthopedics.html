@@ -22,17 +22,68 @@
             }
         }
     </script>
+    <style>
+        /* ==========================================
+           إخفاء جميع ملحقات وشعارات ترجمة جوجل تماماً
+           ========================================== */
+        .goog-te-banner-frame,
+        .goog-te-balloon-frame,
+        #goog-gt-tt,
+        .goog-te-spinner-pos,
+        .goog-te-gadget,
+        .goog-te-gadget-simple,
+        .goog-te-gadget-icon,
+        #goog-gt-widget,
+        [class*="VIpgJd"],
+        div[id*="goog-gt"],
+        iframe[class*="goog-te"],
+        iframe[id*=":1.container"],
+        iframe[id*=":2.container"],
+        iframe.skiptranslate {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            max-height: 0 !important;
+        }
+
+        /* إلغاء الإزاحة العلوية وتثبيت الـ body */
+        body {
+            top: 0px !important;
+            position: static !important;
+        }
+
+        /* تنظيف تأثيرات النص والماوس */
+        font,
+        font[style],
+        .goog-text-highlight {
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased">
 
     <!-- Header -->
     <nav class="bg-white border-b border-slate-100 py-4 px-6 lg:px-16 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="text-medical-700 font-bold flex items-center gap-2 hover:opacity-80 transition">
+            <a href="index.html" class="text-medical-700 font-bold flex items-center gap-2 hover:opacity-80 transition text-sm">
                 <i class="fa-solid fa-arrow-right dir-arrow"></i>
                 العودة للرئيسية
             </a>
-            <img src="images/logo.png" alt="Logo" class="h-10">
+
+            <div class="flex items-center gap-4">
+                <!-- Custom Language Toggle Button -->
+                <button onclick="toggleLang()" id="customLangBtn" class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-semibold transition border border-slate-200 text-xs cursor-pointer">
+                    <i class="fa-solid fa-globe text-medical-700"></i>
+                    <span id="customLangText">English</span>
+                </button>
+
+                <img src="images/logo.png" alt="Logo" class="h-10">
+            </div>
         </div>
     </nav>
 
@@ -119,6 +170,65 @@
 
         </div>
     </main>
+
+    <!-- Google Translate Engine (Hidden) -->
+    <div id="google_translate_element" style="display: none !important;"></div>
+
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'ar',
+        includedLanguages: 'ar,en',
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+
+    // دالة التبديل عند الضغط على الزر
+    let currentLang = 'ar';
+    function toggleLang() {
+      const selectBox = document.querySelector('.goog-te-combo');
+      if (currentLang === 'ar') {
+        if (selectBox) {
+          selectBox.value = 'en';
+          selectBox.dispatchEvent(new Event('change'));
+        }
+        document.getElementById('customLangText').innerText = 'العربية';
+        document.documentElement.setAttribute('dir', 'ltr');
+        currentLang = 'en';
+      } else {
+        if (selectBox) {
+          selectBox.value = 'ar';
+          selectBox.dispatchEvent(new Event('change'));
+        }
+        document.getElementById('customLangText').innerText = 'English';
+        document.documentElement.setAttribute('dir', 'rtl');
+        currentLang = 'ar';
+      }
+    }
+
+    // مراقب ذكي يمنع ظهور أي شعارات أو أشرطة عائمة نهائياً
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.nodeType === 1) {
+            if (
+              (node.tagName === 'IFRAME' && (node.classList.contains('skiptranslate') || (node.id && (node.id.includes(':1.container') || node.id.includes(':2.container'))))) ||
+              node.classList.contains('VIpgJd-yD36eb-LgAdfc') ||
+              (node.id && node.id.startsWith('goog-gt'))
+            ) {
+              node.style.display = 'none';
+              node.style.opacity = '0';
+              node.style.pointerEvents = 'none';
+              setTimeout(() => node.remove(), 10);
+            }
+          }
+        });
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
