@@ -188,3 +188,49 @@ box-shadow:
     filter: drop-shadow(0 0 15px rgba(234, 179, 8, 0.9));
 }
 
+
+
+
+/* ==========================================
+   إخفاء جميع ملحقات وشعارات ترجمة جوجل تماماً
+   ========================================== */
+
+/* 1. إخفاء الإطارات والأشرطة العائمة */
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+.goog-te-spinner-pos,
+.goog-te-gadget,
+.goog-te-gadget-simple,
+.goog-te-gadget-icon,
+#goog-gt-widget,
+[class*="VIpgJd"],
+div[id*="goog-gt"],
+iframe[class*="goog-te"],
+iframe[id*=":1.container"],
+iframe[id*=":2.container"],
+iframe.skiptranslate {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    max-height: 0 !important;
+}
+
+/* 2. إلغاء الإزاحة العلوية وتثبيت الـ body */
+body {
+    top: 0px !important;
+    position: static !important;
+}
+
+/* 3. تنظيف تأثيرات النص والماوس */
+font,
+font[style],
+.goog-text-highlight {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
