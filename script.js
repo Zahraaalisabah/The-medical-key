@@ -41,7 +41,19 @@ const i18nData = {
         cardMore: "استعرض التفاصيل",
         footerAbout: "نحن ملتزمون بنقل أحدث التطورات الطبية العالمية للمؤسسات الصحية العراقية، وتقديم خدمات متكاملة تضمن أعلى مستويات السلامة والاعتمادية.",
         footerQuick: "روابط سريعة",
-        footerContact: "معلومات الاتصال"
+        footerContact: "معلومات الاتصال", // تم إضافة الفارزة هنا
+        spineDeptTitle: "قسم العمود الفقري",
+        spineDeptDesc: "تتميز جراحة العمود الفقري الحديثة بالاعتماد على تقنيات التدخل المحدود التي تقلل من الشقوق الجراحية وتسرّع من استعادة المريض لنشاطه اليومي. توفر حلولنا الجراحية أعلى درجات التوافق الحيوي والاستقرار الهيكلي للفقرات العنقية والقطنية.",
+        availableEquipTitle: "الأجهزة والمستلزمات المتاحة",
+        equip1Title: "أنظمة نواظير الفقرات (Endoscopic Spine):",
+        equip1Desc: " أجهزة أدوات الناظور الدقيق لإزالة الانزلاق الغضروفي بأقل ألم وأسرع فترة تعافي.",
+        equip2Title: "مسامير وقضبان التثبيت (Pedicle Screws):",
+        equip2Desc: " أنظمة تثبيت الفقرات العنقية والقطنية عالية الجودة لاستقرار العمود الفقري.",
+        equip3Title: "الأقفاص البديلة للديسك (PEEK Cages):",
+        equip3Desc: " أقفاص بينية للفقرات مصنعة من مادة PEEK المتوافقة حيوياً لتحفيز الاندماج العظمي.",
+        ctaTitle: "هل لديك استفسار عن منتجات هذا القسم؟",
+        ctaDesc: "فريقنا المتخصص مستعد لتقديم كافة المعلومات الفنية والعروض التجارية الخاصة بمستلزمات جراحة العمود الفقري.",
+        ctaBtn: "تواصل معنا عبر واتساب لطلب عرض سعر"
     },
     en: {
         logoTitle: "Al-Miftah",
@@ -84,7 +96,19 @@ const i18nData = {
         cardMore: "View Details",
         footerAbout: "Committed to delivering world-class medical advances to Iraqi healthcare institutions with complete safety and long-term reliability.",
         footerQuick: "Quick Links",
-        footerContact: "Contact Information"
+        footerContact: "Contact Information", // تم إضافة الفارزة هنا
+        spineDeptTitle: "Spine Surgery Department",
+        spineDeptDesc: "Modern spine surgery relies on minimally invasive techniques that minimize surgical incisions and speed up recovery. Our surgical solutions provide the highest level of biocompatibility and structural stability for cervical and lumbar vertebrae.",
+        availableEquipTitle: "Available Equipment & Supplies",
+        equip1Title: "Endoscopic Spine Systems:",
+        equip1Desc: " Micro-endoscopic instrumentation for disc herniation removal with minimal pain and faster recovery.",
+        equip2Title: "Pedicle Screws & Rods:",
+        equip2Desc: " High-quality cervical and lumbar fixation systems for spinal stability.",
+        equip3Title: "PEEK Cages:",
+        equip3Desc: " Interbody cages made of biocompatible PEEK material to promote bone fusion.",
+        ctaTitle: "Have questions about products in this section?",
+        ctaDesc: "Our specialized team is ready to provide all technical information and commercial quotes for spine surgery supplies.",
+        ctaBtn: "Contact us via WhatsApp to Request a Quote"
     }
 };
 
