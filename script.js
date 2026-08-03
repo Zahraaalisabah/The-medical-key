@@ -41,19 +41,7 @@ const i18nData = {
         cardMore: "استعرض التفاصيل",
         footerAbout: "نحن ملتزمون بنقل أحدث التطورات الطبية العالمية للمؤسسات الصحية العراقية، وتقديم خدمات متكاملة تضمن أعلى مستويات السلامة والاعتمادية.",
         footerQuick: "روابط سريعة",
-        footerContact: "معلومات الاتصال", // تم إضافة الفارزة هنا
-        spineDeptTitle: "قسم العمود الفقري",
-        spineDeptDesc: "تتميز جراحة العمود الفقري الحديثة بالاعتماد على تقنيات التدخل المحدود التي تقلل من الشقوق الجراحية وتسرّع من استعادة المريض لنشاطه اليومي. توفر حلولنا الجراحية أعلى درجات التوافق الحيوي والاستقرار الهيكلي للفقرات العنقية والقطنية.",
-        availableEquipTitle: "الأجهزة والمستلزمات المتاحة",
-        equip1Title: "أنظمة نواظير الفقرات (Endoscopic Spine):",
-        equip1Desc: " أجهزة أدوات الناظور الدقيق لإزالة الانزلاق الغضروفي بأقل ألم وأسرع فترة تعافي.",
-        equip2Title: "مسامير وقضبان التثبيت (Pedicle Screws):",
-        equip2Desc: " أنظمة تثبيت الفقرات العنقية والقطنية عالية الجودة لاستقرار العمود الفقري.",
-        equip3Title: "الأقفاص البديلة للديسك (PEEK Cages):",
-        equip3Desc: " أقفاص بينية للفقرات مصنعة من مادة PEEK المتوافقة حيوياً لتحفيز الاندماج العظمي.",
-        ctaTitle: "هل لديك استفسار عن منتجات هذا القسم؟",
-        ctaDesc: "فريقنا المتخصص مستعد لتقديم كافة المعلومات الفنية والعروض التجارية الخاصة بمستلزمات جراحة العمود الفقري.",
-        ctaBtn: "تواصل معنا عبر واتساب لطلب عرض سعر"
+        footerContact: "معلومات الاتصال"
     },
     en: {
         logoTitle: "Al-Miftah",
@@ -96,68 +84,9 @@ const i18nData = {
         cardMore: "View Details",
         footerAbout: "Committed to delivering world-class medical advances to Iraqi healthcare institutions with complete safety and long-term reliability.",
         footerQuick: "Quick Links",
-        footerContact: "Contact Information", // تم إضافة الفارزة هنا
-        spineDeptTitle: "Spine Surgery Department",
-        spineDeptDesc: "Modern spine surgery relies on minimally invasive techniques that minimize surgical incisions and speed up recovery. Our surgical solutions provide the highest level of biocompatibility and structural stability for cervical and lumbar vertebrae.",
-        availableEquipTitle: "Available Equipment & Supplies",
-        equip1Title: "Endoscopic Spine Systems:",
-        equip1Desc: " Micro-endoscopic instrumentation for disc herniation removal with minimal pain and faster recovery.",
-        equip2Title: "Pedicle Screws & Rods:",
-        equip2Desc: " High-quality cervical and lumbar fixation systems for spinal stability.",
-        equip3Title: "PEEK Cages:",
-        equip3Desc: " Interbody cages made of biocompatible PEEK material to promote bone fusion.",
-        ctaTitle: "Have questions about products in this section?",
-        ctaDesc: "Our specialized team is ready to provide all technical information and commercial quotes for spine surgery supplies.",
-        ctaBtn: "Contact us via WhatsApp to Request a Quote"
+        footerContact: "Contact Information"
     }
 };
-
-// Global Language Variable
-let currentLang = localStorage.getItem('siteLang') || 'ar';
-let selectedProvinceKey = 'baghdad';
-
-function applyLanguage(lang) {
-    const langText = document.getElementById('langText');
-    
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-    if (lang === 'en') {
-        document.body.classList.remove('font-cairo');
-        document.body.classList.add('font-plus');
-        if (langText) langText.textContent = 'العربية';
-    } else {
-        document.body.classList.remove('font-plus');
-        document.body.classList.add('font-cairo');
-        if (langText) langText.textContent = 'English';
-    }
-
-    // Translate regular static text
-    document.querySelectorAll('[data-i18n]').forEach(element => {
-        const key = element.getAttribute('data-i18n');
-        if (i18nData[lang] && i18nData[lang][key]) {
-            element.textContent = i18nData[lang][key];
-        }
-    });
-
-    localStorage.setItem('siteLang', lang);
-
-    // Re-render Dynamic Data (Table & Map) in Selected Language
-    renderHospitalsTable(hospitalsData);
-    selectProvince(selectedProvinceKey);
-
-    // Update toggle table button text
-    const container = document.getElementById('hospitalsContainer');
-    const btnText = document.getElementById('toggleBtnText');
-    if (btnText && container) {
-        const isHidden = container.classList.contains('hidden');
-        if (isHidden) {
-            btnText.innerText = lang === 'ar' ? 'عرض جدول المستشفيات والتجهيزات (43)' : 'Show Hospitals & Equipment Table (43)';
-        } else {
-            btnText.innerText = lang === 'ar' ? 'إخفاء جدول المستشفيات والتجهيزات' : 'Hide Hospitals & Equipment Table';
-        }
-    }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -171,17 +100,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Language Switcher Event
+    // 2. Language Switcher (Ar / En)
+    let currentLang = 'ar';
     const langBtn = document.getElementById('langBtn');
+    const langText = document.getElementById('langText');
 
     if (langBtn) {
         langBtn.addEventListener('click', () => {
             currentLang = currentLang === 'ar' ? 'en' : 'ar';
-            applyLanguage(currentLang);
+            
+            // Toggle HTML Language & Direction
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+            // Toggle Font Family Class
+            if (currentLang === 'en') {
+                document.body.classList.remove('font-cairo');
+                document.body.classList.add('font-plus');
+                langText.textContent = 'العربية';
+            } else {
+                document.body.classList.remove('font-plus');
+                document.body.classList.add('font-cairo');
+                langText.textContent = 'English';
+            }
+
+            // Translate Text Elements
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (i18nData[currentLang][key]) {
+                    element.textContent = i18nData[currentLang][key];
+                }
+            });
         });
     }
 
-    // 3. Stats Counter Animation
+    // 3. Stats Counter Animation on Scroll
     const counters = document.querySelectorAll('.counter');
     let hasCounted = false;
 
@@ -217,58 +170,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initial language application
-    applyLanguage(currentLang);
 });
 
-// Multi-language Hospitals Data Array
+
+
+// ==========================================
+// Hospitals & Equipment Data Array
+// ==========================================
 const hospitalsData = [
-    { id: 1, name: { ar: "مستشفى الجهاز الهضمي", en: "Gastroenterology Hospital" }, dept: { ar: "دائرة صحة النجف الأشرف", en: "Al-Najaf Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 2, name: { ar: "مستشفى الزهراء التعليمي", en: "Al-Zahra Teaching Hospital" }, dept: { ar: "دائرة صحة النجف الأشرف", en: "Al-Najaf Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 3, name: { ar: "مستشفى الحكيم", en: "Al-Hakim Hospital" }, dept: { ar: "دائرة صحة النجف الأشرف", en: "Al-Najaf Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 4, name: { ar: "مستشفى النجف التعليمي", en: "Al-Najaf Teaching Hospital" }, dept: { ar: "دائرة صحة النجف الأشرف", en: "Al-Najaf Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 جهاز ناظور الكسور (الألماني)", en: "K Synergy 4 Orthopedic Arthroscopy (German)" } },
-    { id: 5, name: { ar: "مستشفى الرمادي التعليمي", en: "Ramadi Teaching Hospital" }, dept: { ar: "دائرة صحة الأنبار", en: "Anbar Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 6, name: { ar: "مستشفى الفلوجة التعليمي", en: "Fallujah Teaching Hospital" }, dept: { ar: "دائرة صحة الأنبار", en: "Anbar Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 7, name: { ar: "مستشفى هيت العام", en: "Hit General Hospital" }, dept: { ar: "دائرة صحة الأنبار", en: "Anbar Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 8, name: { ar: "مستشفى المجمع الكويتي", en: "Kuwaiti Complex Hospital" }, dept: { ar: "دائرة صحة البصرة", en: "Basra Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 9, name: { ar: "مستشفى بعقوبة التعليمي", en: "Baqubah Teaching Hospital" }, dept: { ar: "دائرة صحة ديالى", en: "Diyala Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 10, name: { ar: "مستشفى بعقوبة التعليمي", en: "Baqubah Teaching Hospital" }, dept: { ar: "دائرة صحة ديالى", en: "Diyala Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 11, name: { ar: "المستشفى البحثي", en: "Research Hospital" }, dept: { ar: "دائرة صحة نينوى", en: "Nineveh Health Directorate" }, sector: "حكومي", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 12, name: { ar: "مستشفى رويال الملكي (حي الجامعة)", en: "Royal Hospital (Al-Jami'a)" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 13, name: { ar: "مستشفى رويال الملكي (حي الجامعة)", en: "Royal Hospital (Al-Jami'a)" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 14, name: { ar: "مستشفى رويال الملكي (شارع فلسطين)", en: "Royal Hospital (Palestine St.)" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 15, name: { ar: "مستشفى رويال الملكي (السيدية)", en: "Royal Hospital (Saydiya)" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 16, name: { ar: "مستشفى رويال الملكي (السيدية)", en: "Royal Hospital (Saydiya)" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 17, name: { ar: "مستشفى البدور الأهلي", en: "Al-Budoor Private Hospital" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 18, name: { ar: "مستشفى راهبات الحياة", en: "Sisters of Life Hospital" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 19, name: { ar: "مستشفى الأمير الأهلي", en: "Al-Amir Private Hospital" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 20, name: { ar: "مستشفى الأمير الأهلي", en: "Al-Amir Private Hospital" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 21, name: { ar: "مستشفى الحياة الأهلي", en: "Al-Hayat Private Hospital" }, dept: { ar: "البصرة - القطاع الخاص", en: "Basra - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 22, name: { ar: "مستشفى النبأ العظيم", en: "Al-Nabaa Al-Azeem Hospital" }, dept: { ar: "البصرة - القطاع الخاص", en: "Basra - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 23, name: { ar: "مستشفى الفراهيدي الأهلي", en: "Al-Farahidi Private Hospital" }, dept: { ar: "البصرة - القطاع الخاص", en: "Basra - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 24, name: { ar: "مستشفى ضفاف الفرات", en: "Difaf Al-Furat Hospital" }, dept: { ar: "البصرة - القطاع الخاص", en: "Basra - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 25, name: { ar: "مستشفى ابن البيطار", en: "Ibn Al-Bitar Hospital" }, dept: { ar: "البصرة - القطاع الخاص", en: "Basra - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 26, name: { ar: "مستشفى الموسوي الأهلي", en: "Al-Mawsawi Private Hospital" }, dept: { ar: "البصرة - القطاع الخاص", en: "Basra - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 27, name: { ar: "مستشفى الأمير الأهلي", en: "Al-Amir Private Hospital" }, dept: { ar: "النجف الأشرف - القطاع الخاص", en: "Najaf - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 28, name: { ar: "مستشفى الزهراوي الأهلي", en: "Al-Zahrawi Private Hospital" }, dept: { ar: "الموصل - القطاع الخاص", en: "Mosul - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 29, name: { ar: "مستشفى الرازي الأهلي", en: "Al-Razi Private Hospital" }, dept: { ar: "الرمادي - القطاع الخاص", en: "Ramadi - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 30, name: { ar: "مستشفى أربيل الدولي", en: "Erbil International Hospital" }, dept: { ar: "أربيل - القطاع الخاص", en: "Erbil - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 31, name: { ar: "مستشفى ورد الأهلي", en: "Ward Private Hospital" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 32, name: { ar: "مستشفى ورد الأهلي", en: "Ward Private Hospital" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 33, name: { ar: "مستشفى واسط الاستثماري", en: "Wasit Investment Hospital" }, dept: { ar: "واسط - القطاع الخاص", en: "Wasit - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 34, name: { ar: "مستشفى دجلة الأهلي", en: "Tigris Private Hospital" }, dept: { ar: "واسط - القطاع الخاص", en: "Wasit - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 35, name: { ar: "مستشفى السبطين", en: "Al-Sibtayn Hospital" }, dept: { ar: "البصرة - القطاع الخاص", en: "Basra - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 36, name: { ar: "عيادة فلسطين الجراحية", en: "Palestine Surgical Clinic" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 37, name: { ar: "عيادة فلسطين الجراحية", en: "Palestine Surgical Clinic" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة عامة", en: "K Synergy 4 General Surgery Endoscopy" } },
-    { id: 38, name: { ar: "عيادة فلسطين الجراحية", en: "Palestine Surgical Clinic" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة بولية", en: "K Synergy 4 Urology Endoscopy" } },
-    { id: 39, name: { ar: "عيادة فلسطين الجراحية", en: "Palestine Surgical Clinic" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 تجهيز ناظور جراحة نسائية", en: "K Synergy 4 Gynecology Endoscopy" } },
-    { id: 40, name: { ar: "مستشفى قوى الأمن الداخلي", en: "Internal Security Forces Hospital" }, dept: { ar: "وزارة الداخلية", en: "Ministry of Interior" }, sector: "حكومي", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 41, name: { ar: "مستشفى جامعة العين", en: "Al-Ayn University Hospital" }, dept: { ar: "ذي قار - القطاع الخاص", en: "Dhi Qar - Private Sector" }, sector: "خاص", detail: { ar: "ناظور جراحة العمود الفقري", en: "Spine Surgery Endoscopy" } },
-    { id: 42, name: { ar: "مستشفى دجلة الأهلي", en: "Tigris Private Hospital" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور الكسور", en: "K Synergy 4 Orthopedic Arthroscopy" } },
-    { id: 43, name: { ar: "مستشفى يحيى الأهلي", en: "Yahya Private Hospital" }, dept: { ar: "بغداد - القطاع الخاص", en: "Baghdad - Private Sector" }, sector: "خاص", detail: { ar: "K Synergy 4 جهاز ناظور العمود الفقري", en: "K Synergy 4 Spine Surgery Endoscopy" } }
+    { id: 1, name: "مستشفى الجهاز الهضمي", dept: "دائرة صحة النجف الأشرف", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 2, name: "مستشفى الزهراء التعليمي", dept: "دائرة صحة النجف الأشرف", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 3, name: "مستشفى الحكيم", dept: "دائرة صحة النجف الأشرف", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 4, name: "مستشفى النجف التعليمي", dept: "دائرة صحة النجف الأشرف", sector: "حكومي", detail: "K Synergy 4 جهاز ناظور الكسور (الألماني)", qty: 1 },
+    { id: 5, name: "مستشفى الرمادي التعليمي", dept: "دائرة صحة الأنبار", sector: "حكومي", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 6, name: "مستشفى الفلوجة التعليمي", dept: "دائرة صحة الأنبار", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 3 },
+    { id: 7, name: "مستشفى هيت العام", dept: "دائرة صحة الأنبار", sector: "حكومي", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 8, name: "مستشفى المجمع الكويتي", dept: "دائرة صحة البصرة", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 9, name: "مستشفى بعقوبة التعليمي", dept: "دائرة صحة ديالى", sector: "حكومي", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 10, name: "مستشفى بعقوبة التعليمي", dept: "دائرة صحة ديالى", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 11, name: "المستشفى البحثي", dept: "دائرة صحة نينوى", sector: "حكومي", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 12, name: "مستشفى رويال الملكي (حي الجامعة)", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 13, name: "مستشفى رويال الملكي (حي الجامعة)", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 14, name: "مستشفى رويال الملكي (شارع فلسطين)", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 15, name: "مستشفى رويال الملكي (السيدية)", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 16, name: "مستشفى رويال الملكي (السيدية)", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 17, name: "مستشفى البدور الأهلي", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 18, name: "مستشفى راهبات الحياة", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 19, name: "مستشفى الأمير الأهلي", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 20, name: "مستشفى الأمير الأهلي", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 2 },
+    { id: 21, name: "مستشفى الحياة الأهلي", dept: "البصرة - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 2 },
+    { id: 22, name: "مستشفى النبأ العظيم", dept: "البصرة - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 23, name: "مستشفى الفراهيدي الأهلي", dept: "البصرة - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 24, name: "مستشفى ضفاف الفرات", dept: "البصرة - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 25, name: "مستشفى ابن البيطار", dept: "البصرة - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 26, name: "مستشفى الموسوي الأهلي", dept: "البصرة - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 27, name: "مستشفى الأمير الأهلي", dept: "النجف الأشرف - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 2 },
+    { id: 28, name: "مستشفى الزهراوي الأهلي", dept: "الموصل - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 2 },
+    { id: 29, name: "مستشفى الرازي الأهلي", dept: "الرمادي - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 30, name: "مستشفى أربيل الدولي", dept: "أربيل - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 31, name: "مستشفى ورد الأهلي", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 2 },
+    { id: 32, name: "مستشفى ورد الأهلي", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 33, name: "مستشفى واسط الاستثماري", dept: "واسط - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 34, name: "مستشفى دجلة الأهلي", dept: "واسط - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 35, name: "مستشفى السبطين", dept: "البصرة - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 36, name: "عيادة فلسطين الجراحية", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 37, name: "عيادة فلسطين الجراحية", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة عامة", qty: 1 },
+    { id: 38, name: "عيادة فلسطين الجراحية", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة بولية", qty: 1 },
+    { id: 39, name: "عيادة فلسطين الجراحية", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 تجهيز ناظور جراحة نسائية", qty: 1 },
+    { id: 40, name: "مستشفى قوى الأمن الداخلي", dept: "وزارة الداخلية", sector: "حكومي", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 41, name: "مستشفى جامعة العين", dept: "ذي قار - القطاع الخاص", sector: "خاص", detail: "ناظور جراحة العمود الفقري", qty: 1 },
+    { id: 42, name: "مستشفى دجلة الأهلي", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور الكسور", qty: 1 },
+    { id: 43, name: "مستشفى يحيى الأهلي", dept: "بغداد - القطاع الخاص", sector: "خاص", detail: "K Synergy 4 جهاز ناظور العمود الفقري", qty: 1 }
 ];
 
-// Render Table Function in Selected Language
+// Render Table Function
+// Render Table Function (بدون عمود عدد القطع)
 function renderHospitalsTable(data) {
     const tbody = document.getElementById('hospitalsTableBody');
     if (!tbody) return;
@@ -276,21 +232,17 @@ function renderHospitalsTable(data) {
     tbody.innerHTML = '';
     
     data.forEach((item) => {
-        const nameText = item.name[currentLang] || item.name['ar'];
-        const deptText = item.dept[currentLang] || item.dept['ar'];
-        const detailText = item.detail[currentLang] || item.detail['ar'];
-
         const row = document.createElement('tr');
         row.className = "hover:bg-slate-50 transition duration-150";
         row.innerHTML = `
             <td class="p-4 text-center font-bold text-slate-400">${item.id}</td>
-            <td class="p-4 font-black text-slate-900">${nameText}</td>
+            <td class="p-4 font-black text-slate-900">${item.name}</td>
             <td class="p-4 text-slate-600">
                 <span class="inline-block px-2.5 py-1 rounded-md text-[11px] font-bold ${item.sector === 'حكومي' ? 'bg-amber-50 text-amber-800 border border-amber-200' : 'bg-blue-50 text-blue-800 border border-blue-100'}">
-                    ${deptText}
+                    ${item.dept}
                 </span>
             </td>
-            <td class="p-4 text-slate-700">${detailText}</td>
+            <td class="p-4 text-slate-700">${item.detail}</td>
         `;
         tbody.appendChild(row);
     });
@@ -299,12 +251,11 @@ function renderHospitalsTable(data) {
 // Search Function
 function searchHospitals() {
     const query = document.getElementById('hospitalSearch').value.toLowerCase();
-    const filtered = hospitalsData.filter(item => {
-        const name = (item.name[currentLang] || item.name['ar']).toLowerCase();
-        const dept = (item.dept[currentLang] || item.dept['ar']).toLowerCase();
-        const detail = (item.detail[currentLang] || item.detail['ar']).toLowerCase();
-        return name.includes(query) || dept.includes(query) || detail.includes(query);
-    });
+    const filtered = hospitalsData.filter(item => 
+        item.name.toLowerCase().includes(query) ||
+        item.dept.toLowerCase().includes(query) ||
+        item.detail.toLowerCase().includes(query)
+    );
     renderHospitalsTable(filtered);
 }
 
@@ -315,10 +266,8 @@ function filterHospitals(type) {
         btn.classList.add('bg-slate-100', 'text-slate-700');
     });
 
-    if (window.event && window.event.target) {
-        window.event.target.classList.remove('bg-slate-100', 'text-slate-700');
-        window.event.target.classList.add('bg-medical-700', 'text-white', 'shadow-md');
-    }
+    event.target.classList.remove('bg-slate-100', 'text-slate-700');
+    event.target.classList.add('bg-medical-700', 'text-white', 'shadow-md');
 
     if (type === 'all') {
         renderHospitalsTable(hospitalsData);
@@ -329,13 +278,20 @@ function filterHospitals(type) {
     }
 }
 
-// Toggle Hospitals Table Container
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    renderHospitalsTable(hospitalsData);
+});
+
+
+// Function to toggle hospitals table visibility
 function toggleHospitalsContainer() {
     const container = document.getElementById('hospitalsContainer');
     const arrow = document.getElementById('toggleArrow');
     const btnText = document.getElementById('toggleBtnText');
 
     if (container.classList.contains('hidden')) {
+        // إظهار الجدول
         container.classList.remove('hidden');
         setTimeout(() => {
             container.classList.remove('opacity-0', '-translate-y-2');
@@ -343,8 +299,9 @@ function toggleHospitalsContainer() {
         }, 20);
         
         arrow.style.transform = 'rotate(180deg)';
-        btnText.innerText = currentLang === 'ar' ? 'إخفاء جدول المستشفيات والتجهيزات' : 'Hide Hospitals & Equipment Table';
+        btnText.innerText = 'إخفاء جدول المستشفيات والتجهيزات';
     } else {
+        // إخفاء الجدول
         container.classList.remove('opacity-100', 'translate-y-0');
         container.classList.add('opacity-0', '-translate-y-2');
         
@@ -353,133 +310,100 @@ function toggleHospitalsContainer() {
         }, 300);
         
         arrow.style.transform = 'rotate(0deg)';
-        btnText.innerText = currentLang === 'ar' ? 'عرض جدول المستشفيات والتجهيزات (43)' : 'Show Hospitals & Equipment Table (43)';
+        btnText.innerText = 'عرض جدول المستشفيات والتجهيزات (43)';
     }
 }
 
-// Multi-language Interactive Map Data
+// ==========================================
+// Iraq Map Interactive Data
+// ==========================================
 const provincesData = {
     baghdad: {
-        name: { ar: "بغداد", en: "Baghdad" },
-        count: { ar: "25 مشروع", en: "25 Projects" },
-        hospitals: {
-            ar: [
-                "مستشفى رويال الملكي (حي الجامعة، شارع فلسطين، السيدية)",
-                "مستشفى البدور الأهلي - مستشفى الأمير الأهلي",
-                "مستشفى راهبات الحياة - مستشفى قوى الأمن الداخلي",
-                "مستشفى دجلة الأهلي - مستشفى يحيى الأهلي"
-            ],
-            en: [
-                "Royal Hospital (Al-Jami'a, Palestine St., Saydiya)",
-                "Al-Budoor Private Hospital - Al-Amir Private Hospital",
-                "Sisters of Life Hospital - Internal Security Forces Hospital",
-                "Tigris Private Hospital - Yahya Private Hospital"
-            ]
-        }
+        name: "بغداد",
+        count: "25 مشروع",
+        hospitals: [
+            "مستشفى رويال الملكي (حي الجامعة، شارع فلسطين، السيدية)",
+            "مستشفى البدور الأهلي - مستشفى الأمير الأهلي",
+            "مستشفى راهبات الحياة - مستشفى قوى الأمن الداخلي",
+            "مستشفى دجلة الأهلي - مستشفى يحيى الأهلي"
+        ]
     },
     basra: {
-        name: { ar: "البصرة", en: "Basra" },
-        count: { ar: "14 مشروع", en: "14 Projects" },
-        hospitals: {
-            ar: [
-                "مستشفى المجمع الكويتي - مستشفى الحياة الأهلي",
-                "مستشفى النبأ العظيم - مستشفى الفراهيدي الأهلي",
-                "مستشفى ضفاف الفرات - مستشفى ابن البيطار",
-                "مستشفى الموسوي الأهلي - مستشفى السبطين"
-            ],
-            en: [
-                "Kuwaiti Complex Hospital - Al-Hayat Private Hospital",
-                "Al-Nabaa Al-Azeem Hospital - Al-Farahidi Private Hospital",
-                "Difaf Al-Furat Hospital - Ibn Al-Bitar Hospital",
-                "Al-Mawsawi Private Hospital - Al-Sibtayn Hospital"
-            ]
-        }
+        name: "البصرة",
+        count: "14 مشروع",
+        hospitals: [
+            "مستشفى المجمع الكويتي - مستشفى الحياة الأهلي",
+            "مستشفى النبأ العظيم - مستشفى الفراهيدي الأهلي",
+            "مستشفى ضفاف الفرات - مستشفى ابن البيطار",
+            "مستشفى الموسوي الأهلي - مستشفى السبطين"
+        ]
     },
     najaf: {
-        name: { ar: "النجف الأشرف", en: "Najaf" },
-        count: { ar: "10 مشاريع", en: "10 Projects" },
-        hospitals: {
-            ar: [
-                "مستشفى الجهاز الهضمي - مستشفى الزهراء التعليمي",
-                "مستشفى الحكيم - مستشفى النجف التعليمي",
-                "مستشفى الأمير الأهلي"
-            ],
-            en: [
-                "Gastroenterology Hospital - Al-Zahra Teaching Hospital",
-                "Al-Hakim Hospital - Al-Najaf Teaching Hospital",
-                "Al-Amir Private Hospital"
-            ]
-        }
+        name: "النجف الأشرف",
+        count: "10 مشاريع",
+        hospitals: [
+            "مستشفى الجهاز الهضمي - مستشفى الزهراء التعليمي",
+            "مستشفى الحكيم - مستشفى النجف التعليمي",
+            "مستشفى الأمير الأهلي"
+        ]
     },
     anbar: {
-        name: { ar: "الأنبار", en: "Anbar" },
-        count: { ar: "6 مشاريع", en: "6 Projects" },
-        hospitals: {
-            ar: [
-                "مستشفى الرمادي التعليمي - مستشفى الفلوجة التعليمي",
-                "مستشفى هيت العام - مستشفى الرازي الأهلي"
-            ],
-            en: [
-                "Ramadi Teaching Hospital - Fallujah Teaching Hospital",
-                "Hit General Hospital - Al-Razi Private Hospital"
-            ]
-        }
+        name: "الأنبار",
+        count: "6 مشاريع",
+        hospitals: [
+            "مستشفى الرمادي التعليمي - مستشفى الفلوجة التعليمي",
+            "مستشفى هيت العام - مستشفى الرازي الأهلي"
+        ]
     },
     erbil: {
-        name: { ar: "أربيل", en: "Erbil" },
-        count: { ar: "3 مشاريع", en: "3 Projects" },
-        hospitals: {
-            ar: [
-                "مستشفى أربيل الدولي"
-            ],
-            en: [
-                "Erbil International Hospital"
-            ]
-        }
+        name: "أربيل",
+        count: "3 مشاريع",
+        hospitals: [
+            "مستشفى أربيل الدولي"
+        ]
     },
     ninawa: {
-        name: { ar: "نينوى", en: "Nineveh" },
-        count: { ar: "4 مشاريع", en: "4 Projects" },
-        hospitals: {
-            ar: [
-                "المستشفى البحثي - مستشفى الزهراوي الأهلي"
-            ],
-            en: [
-                "Research Hospital - Al-Zahrawi Private Hospital"
-            ]
-        }
+        name: "نينوى",
+        count: "4 مشاريع",
+        hospitals: [
+            "المستشفى البحثي - مستشفى الزهراوي الأهلي"
+        ]
     }
 };
 
+// Function to handle province click
 function selectProvince(provKey) {
-    selectedProvinceKey = provKey;
     const data = provincesData[provKey];
     if (!data) return;
 
+    // Remove active style from all paths
     document.querySelectorAll('.province-path').forEach(p => p.classList.remove('active-province'));
     
+    // Add active style to selected province
     const activePath = document.getElementById(provKey);
     if (activePath) activePath.classList.add('active-province');
 
-    const nameEl = document.getElementById('provName');
-    const countEl = document.getElementById('provCount');
-    if (nameEl) nameEl.innerText = data.name[currentLang] || data.name['ar'];
-    if (countEl) countEl.innerText = data.count[currentLang] || data.count['ar'];
+    // Update UI Card
+    document.getElementById('provName').innerText = data.name;
+    document.getElementById('provCount').innerText = data.count;
 
     const listContainer = document.getElementById('provHospitals');
-    if (listContainer) {
-        listContainer.innerHTML = '';
-        const list = data.hospitals[currentLang] || data.hospitals['ar'];
-        list.forEach(hosp => {
-            const li = document.createElement('li');
-            li.className = "flex items-center gap-2 bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/30";
-            li.innerHTML = `<i class="fa-solid fa-circle-check text-accent-gold text-xs"></i> <span>${hosp}</span>`;
-            listContainer.appendChild(li);
-        });
-    }
+    listContainer.innerHTML = '';
+    
+    data.hospitals.forEach(hosp => {
+        const li = document.createElement('li');
+        li.className = "flex items-center gap-2 bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/30";
+        li.innerHTML = `<i class="fa-solid fa-circle-check text-accent-gold text-xs"></i> <span>${hosp}</span>`;
+        listContainer.appendChild(li);
+    });
 }
 
-// Swiper Init
+// Default select Baghdad on page load
+document.addEventListener('DOMContentLoaded', () => {
+    selectProvince('baghdad');
+});
+
+// Initialize Certificates Swiper
 document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.certsSwiper')) {
         new Swiper('.certsSwiper', {
@@ -495,8 +419,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 clickable: true,
             },
             breakpoints: {
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
+                640: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                },
             },
         });
     }
