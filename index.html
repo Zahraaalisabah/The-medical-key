@@ -79,9 +79,15 @@ src="https://www.facebook.com/tr?id=2331836970684326&ev=PageView&noscript=1"
             <div class="flex items-center space-x-6 space-x-reverse">
                 <span class="hidden md:inline-block text-slate-400"><i class="fa-solid fa-location-dot text-accent-gold ml-1"></i> العراق- بغداد - مبنئ المسار التجاري </span>
              <!-- Dynamic Language Toggle -->
-<button id="langBtn" onclick="toggleLanguage()" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded-full font-semibold transition border border-white/10 cursor-pointer">
+             <!---   <button id="langBtn" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded-full font-semibold transition border border-white/10">
+                    <i class="fa-solid fa-globe text-accent-gold"></i>
+                    <span id="langText">English</span>
+                </button>
+                -->
+<!-- Custom Custom Language Toggle Button -->
+<button onclick="toggleLang()" id="customLangBtn" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full font-semibold transition border border-white/10 text-xs cursor-pointer">
     <i class="fa-solid fa-globe text-accent-gold"></i>
-    <span id="langText">English</span>
+    <span id="customLangText">English</span>
 </button>
             </div>
         </div>
@@ -886,5 +892,40 @@ src="https://www.facebook.com/tr?id=2331836970684326&ev=PageView&noscript=1"
 
     <!-- Custom JavaScript -->
     <script src="script.js"></script>
+
+    <!-- Google Translate Engine (Hidden) -->
+<div id="google_translate_element" style="display: none !important;"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'ar',
+    includedLanguages: 'ar,en',
+    autoDisplay: false
+  }, 'google_translate_element');
+
+  // مؤقت لإخفاء وحذف أي شعار عائم أو أيقونة تظهر تلقائياً من جوجل
+  setInterval(function() {
+    const googleGadgetIcon = document.querySelector('.goog-te-gadget-icon');
+    const floatingBanner = document.querySelector('.VIpgJd-yD36eb-LgAdfc');
+    const googleTeGadget = document.querySelector('.goog-te-gadget');
+
+    if (googleGadgetIcon) googleGadgetIcon.remove();
+    if (floatingBanner) floatingBanner.remove();
+    if (googleTeGadget) googleTeGadget.style.display = 'none';
+  }, 300);
+}
+
+// دالة التبديل بين اللغات برمجياً عند الضغط على زرّك الخاص
+function changeLanguage(langCode) {
+  const selectBox = document.querySelector('.goog-te-combo');
+  if (selectBox) {
+    selectBox.value = langCode;
+    selectBox.dispatchEvent(new Event('change'));
+  }
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
